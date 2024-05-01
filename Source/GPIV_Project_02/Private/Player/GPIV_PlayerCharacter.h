@@ -21,44 +21,39 @@ class AGPIV_PlayerCharacter : public AGPIV_CharacterBase
 public:
 	AGPIV_PlayerCharacter();
 
-protected:
-	virtual void BeginPlay() override;
-
 private:
 	UPROPERTY(visibleAnywhere, Category = "View")
 	USpringArmComponent* CameraBoom;
 
-	UPROPERTY(EditDefaultsOnly, Category = "View")
+	UPROPERTY(visibleAnywhere, Category = "View")
 	UCameraComponent* ViewCamera;
 
 	virtual void PawnClientRestart() override;
 
 	/*			Input			*/
+
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputMappingContext* InputMapping;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* MoveInputAction;
 
-	/*UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* LookInputAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* JumpInputAction;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	UInputAction* ShootInputAction;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	UInputAction* MorphballInputAction;*/
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
 	void Move(const FInputActionValue& InputValue);
 
-	//UFUNCTION()
-	//void Look(const FInputActionValue& InputValue);
+	UFUNCTION()
+	void Look(const FInputActionValue& InputValue);
+
+	UFUNCTION()
+	void JumpAction(const FInputActionValue& InputValue);
 
 	FVector GetMoveFwdDir() const;
 	FVector GetMoveRightDir() const;
