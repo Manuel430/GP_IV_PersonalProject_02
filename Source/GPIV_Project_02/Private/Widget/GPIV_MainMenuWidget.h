@@ -14,4 +14,19 @@ class UGPIV_MainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+protected:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		class UButton* PlayButton;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		class UButton* QuitButton;
+
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+		void OnPlayClick();
+
+	UFUNCTION()
+		void OnQuitClick();
+
 };

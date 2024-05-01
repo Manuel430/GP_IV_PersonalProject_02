@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
@@ -18,6 +19,7 @@ AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
 	CameraBoom->bUsePawnControlRotation = true;
 
 	GetCharacterMovement()->JumpZVelocity = 600.f;
+	JumpMaxCount = 2;
 
 }
 
@@ -71,11 +73,21 @@ void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 	if (bIsMorphballMode)
 	{
 		CameraBoom->TargetArmLength = 0;
+		GetCharacterMovement()->MaxWalkSpeed = 600;
+		GetCapsuleComponent()->SetCapsuleHalfHeight(88);
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		GetCharacterMovement()->RotationRate = FRotator(0.f);
+		JumpMaxCount = 2;
 		//UE_LOG(LogTemp, Error, TEXT("Player is in Suit form"));
 	}
 	else
 	{
 		CameraBoom->TargetArmLength = 500;
+		GetCharacterMovement()->MaxWalkSpeed = 6000;
+		GetCapsuleComponent()->SetCapsuleHalfHeight(38);
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		GetCharacterMovement()->RotationRate = FRotator(1080.f);
+		JumpMaxCount = 1;
 		//UE_LOG(LogTemp, Error, TEXT("Player is in Morphball form"));
 	}
 
