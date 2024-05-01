@@ -44,6 +44,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* JumpInputAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* MorphballInputAction;
+
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
@@ -55,7 +58,16 @@ private:
 	UFUNCTION()
 	void JumpAction(const FInputActionValue& InputValue);
 
+	UFUNCTION()
+	void Morphball(const FInputActionValue& InputValue);
+
 	FVector GetMoveFwdDir() const;
 	FVector GetMoveRightDir() const;
+
+	/*			Morphball			*/
+
+protected:
+
+	bool bIsMorphballMode;
 
 };

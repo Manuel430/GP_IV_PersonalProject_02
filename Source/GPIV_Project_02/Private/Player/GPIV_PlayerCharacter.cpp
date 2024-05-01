@@ -18,6 +18,7 @@ AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
 	CameraBoom->bUsePawnControlRotation = true;
 
 	GetCharacterMovement()->JumpZVelocity = 600.f;
+
 }
 
 void AGPIV_PlayerCharacter::PawnClientRestart()
@@ -41,6 +42,7 @@ void AGPIV_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		EnhancedInputComp->BindAction(MoveInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Move);
 		EnhancedInputComp->BindAction(LookInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Look);
 		EnhancedInputComp->BindAction(JumpInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::JumpAction);
+		EnhancedInputComp->BindAction(MorphballInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Morphball);
 	}
 }
 
@@ -62,6 +64,22 @@ void AGPIV_PlayerCharacter::Look(const FInputActionValue& InputValue)
 void AGPIV_PlayerCharacter::JumpAction(const FInputActionValue& InputValue)
 {
 	Jump();
+}
+
+void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
+{
+	if (bIsMorphballMode)
+	{
+		CameraBoom->TargetArmLength = 0;
+		//UE_LOG(LogTemp, Error, TEXT("Player is in Suit form"));
+	}
+	else
+	{
+		CameraBoom->TargetArmLength = 500;
+		//UE_LOG(LogTemp, Error, TEXT("Player is in Morphball form"));
+	}
+
+	bIsMorphballMode = !bIsMorphballMode;
 }
 
 FVector AGPIV_PlayerCharacter::GetMoveFwdDir() const
