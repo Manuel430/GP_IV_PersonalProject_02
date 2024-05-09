@@ -29,6 +29,9 @@ AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
 
 	CameraBoom->bUsePawnControlRotation = true;
 
+	SpawnPointComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Spawn Point"));
+	SpawnPointComponent->SetupAttachment(SamusMeshComponent, "SocketName");
+
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 
 }
@@ -163,7 +166,7 @@ void AGPIV_PlayerCharacter::Shooting(const FInputActionValue& InputValue)
 		{
 			APlayerController* PlayerController = Cast<APlayerController>(GetController());
 			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
-			const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
+			const FVector SpawnLocation = SpawnPointComponent->GetSocketLocation("SocketName");
 
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;

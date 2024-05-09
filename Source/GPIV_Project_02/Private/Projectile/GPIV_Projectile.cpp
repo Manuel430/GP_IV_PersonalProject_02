@@ -4,6 +4,7 @@
 #include "Projectile/GPIV_Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Destructible/GPIV_MissileDestructible.h"
 
 // Sets default values
 AGPIV_Projectile::AGPIV_Projectile()
@@ -25,16 +26,21 @@ AGPIV_Projectile::AGPIV_Projectile()
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
-	ProjectileMovement->bShouldBounce = false;
+	ProjectileMovement->bShouldBounce = true;
 
 	InitialLifeSpan = 3.0f;
 }
 
 void AGPIV_Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
+	UE_LOG(LogTemp, Error, TEXT("Projectile hit something!"));
+	
+	AGPIV_MissileDestructible* MissileDestruction = Cast<AGPIV_MissileDestructible>(OtherActor);
+	if (MissileDestruction)
 	{
-		Destroy();
+		OtherActor->Destroy();
 	}
+
+	Destroy();
 }
 

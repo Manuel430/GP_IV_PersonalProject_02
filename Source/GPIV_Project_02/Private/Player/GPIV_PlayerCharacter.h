@@ -11,6 +11,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class USkeletalMeshComponent;
+class USceneComponent;
 /**
  * 
  */
@@ -111,6 +112,9 @@ public:
 
 	/*			Shooting			*/
 private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	USceneComponent* SpawnPointComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<class AGPIV_Projectile> ProjectileClass;
