@@ -7,14 +7,18 @@
 #include "EnhancedInputComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+
 
 AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>("Camera Boom");
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>("View Camera");
+	SamusMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("Samus Mesh");
 
 	CameraBoom->SetupAttachment(GetRootComponent());
 	ViewCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	SamusMeshComponent->SetupAttachment(ViewCamera);
 
 	CameraBoom->bUsePawnControlRotation = true;
 
@@ -82,7 +86,15 @@ void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 		CameraBoom->TargetArmLength = 0;
 		GetCharacterMovement()->MaxWalkSpeed = 600;
 		GetCapsuleComponent()->SetCapsuleHalfHeight(88);
-		JumpMaxCount = 2;
+		
+		if (bCanDoubleJump)
+		{
+			JumpMaxCount = 2;
+		}
+
+		SamusMeshComponent->SetVisibility(true);
+		GetMesh()->SetVisibility(false);
+
 		//UE_LOG(LogTemp, Error, TEXT("Player is in Suit form"));
 	}
 	else
@@ -91,10 +103,26 @@ void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 		GetCharacterMovement()->MaxWalkSpeed = 6000;
 		GetCapsuleComponent()->SetCapsuleHalfHeight(34);
 		JumpMaxCount = 1;
+
+		SamusMeshComponent->SetVisibility(false);
+		GetMesh()->SetVisibility(true);
+
 		//UE_LOG(LogTemp, Error, TEXT("Player is in Morphball form"));
 	}
 
 	bIsMorphballMode = !bIsMorphballMode;
+}
+
+void AGPIV_PlayerCharacter::Sprinting(const FInputActionValue& InputValue)
+{
+}
+
+void AGPIV_PlayerCharacter::Walking(const FInputActionValue& InputValue)
+{
+}
+
+void AGPIV_PlayerCharacter::Shooting(const FInputActionValue& InputValue)
+{
 }
 
 FVector AGPIV_PlayerCharacter::GetMoveFwdDir() const

@@ -29,10 +29,7 @@ private:
 	UPROPERTY(visibleAnywhere, Category = "View")
 	UCameraComponent* ViewCamera;
 
-	/*			SkeletalMeshes			*/
-	UPROPERTY(visibleAnywhere, Category = "Meshes")
-	USkeletalMeshComponent* MoprhballMeshComponent;
-
+	/*			Meshes			*/
 	UPROPERTY(EditDefaultsOnly, Category = "Meshes")
 	USkeletalMeshComponent* SamusMeshComponent;
 
@@ -55,6 +52,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* MorphballInputAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* SprintInputAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* ShootInputAction;
+
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
@@ -68,6 +71,15 @@ private:
 
 	UFUNCTION()
 	void Morphball(const FInputActionValue& InputValue);
+
+	UFUNCTION()
+	void Sprinting(const FInputActionValue& InputValue);
+
+	UFUNCTION()
+	void Walking(const FInputActionValue& InputValue);
+
+	UFUNCTION()
+	void Shooting(const FInputActionValue& InputValue);
 
 	FVector GetMoveFwdDir() const;
 	FVector GetMoveRightDir() const;
