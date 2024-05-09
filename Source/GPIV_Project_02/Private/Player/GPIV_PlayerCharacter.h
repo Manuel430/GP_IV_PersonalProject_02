@@ -91,12 +91,20 @@ private:
 
 protected:
 
-	bool bIsMorphballMode;
+	bool bIsMorphBall;
+	
+	bool bCanMorphBall = false;
+
+public:
+	UFUNCTION()
+	void AllowMorphBall();
 
 	/*			Upgrades			*/
-public:
+protected:
 
 	bool bCanDoubleJump = false;
+
+public:
 
 	UFUNCTION()
 	void AllowDoubleJump();

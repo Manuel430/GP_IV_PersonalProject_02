@@ -59,7 +59,7 @@ void AGPIV_PlayerCharacter::Move(const FInputActionValue& InputValue)
 	FVector2D Input = InputValue.Get<FVector2D>();
 	Input.Normalize();
 
-	if (bIsMorphballMode)
+	if (bIsMorphBall)
 	{
 		AddMovementInput(Input.Y * GetMoveFwdDir());
 	}
@@ -83,7 +83,13 @@ void AGPIV_PlayerCharacter::JumpAction(const FInputActionValue& InputValue)
 
 void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 {
-	if (bIsMorphballMode)
+	if (!bCanMorphBall)
+	{
+		return;
+	}
+
+
+	if (bIsMorphBall)
 	{
 		CameraBoom->TargetArmLength = 0;
 		GetCharacterMovement()->MaxWalkSpeed = 600;
@@ -112,12 +118,12 @@ void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 		//UE_LOG(LogTemp, Error, TEXT("Player is in Morphball form"));
 	}
 
-	bIsMorphballMode = !bIsMorphballMode;
+	bIsMorphBall = !bIsMorphBall;
 }
 
 void AGPIV_PlayerCharacter::Sprinting(const FInputActionValue& InputValue)
 {
-	if (bIsMorphballMode)
+	if (bIsMorphBall)
 	{
 		return;
 	}
@@ -127,7 +133,7 @@ void AGPIV_PlayerCharacter::Sprinting(const FInputActionValue& InputValue)
 
 void AGPIV_PlayerCharacter::Walking(const FInputActionValue& InputValue)
 {
-	if (bIsMorphballMode)
+	if (bIsMorphBall)
 	{
 		return;
 	}
@@ -137,7 +143,7 @@ void AGPIV_PlayerCharacter::Walking(const FInputActionValue& InputValue)
 
 void AGPIV_PlayerCharacter::Shooting(const FInputActionValue& InputValue)
 {
-	if (bIsMorphballMode)
+	if (bIsMorphBall)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Cannot shoot while in Morphball"));
 		return;
@@ -159,11 +165,16 @@ FVector AGPIV_PlayerCharacter::GetMoveRightDir() const
 	return ViewCamera->GetRightVector();
 }
 
+void AGPIV_PlayerCharacter::AllowMorphBall()
+{
+	bCanMorphBall = true;
+}
+
 void AGPIV_PlayerCharacter::AllowDoubleJump()
 {
 	bCanDoubleJump = true;
 
-	if (bIsMorphballMode)
+	if (bIsMorphBall)
 	{
 		return;
 	}
