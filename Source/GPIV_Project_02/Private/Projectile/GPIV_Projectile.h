@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UStaticMeshComponent;
 
 UCLASS()
 class AGPIV_Projectile : public AActor
@@ -19,6 +20,9 @@ class AGPIV_Projectile : public AActor
 
 	UPROPERTY(VisibleAnywhere, Category = Movement, meta = (AllowPrivateAcess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* ProjectileMesh;
 
 public:	
 	// Sets default values for this actor's properties
