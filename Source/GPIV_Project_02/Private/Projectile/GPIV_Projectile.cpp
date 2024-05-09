@@ -2,26 +2,45 @@
 
 
 #include "Projectile/GPIV_Projectile.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Components/SphereComponent.h"
+#include "Destructible/GPIV_MissileDestructible.h"
 
 // Sets default values
 AGPIV_Projectile::AGPIV_Projectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Comp"));
+	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
+	CollisionComp->OnComponentHit.AddDynamic(this, &AGPIV_Projectile::OnHit);
 
+	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.0f));
+	CollisionComp->CanCharacterStepUpOn = ECB_No;
+
+	RootComponent = CollisionComp;
+
+	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
+	ProjectileMesh->SetupAttachment(CollisionComp);
+
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Comp"));
+	ProjectileMovement->UpdatedComponent = CollisionComp;
+	ProjectileMovement->InitialSpeed = 3000.f;
+	ProjectileMovement->MaxSpeed = 3000.f;
+	ProjectileMovement->bRotationFollowsVelocity = true;
+	ProjectileMovement->bShouldBounce = true;
+
+	InitialLifeSpan = 3.0f;
 }
 
-// Called when the game starts or when spawned
-void AGPIV_Projectile::BeginPlay()
+void AGPIV_Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	Super::BeginPlay();
+	UE_LOG(LogTemp, Error, TEXT("Projectile hit something!"));
 	
-}
+	AGPIV_MissileDestructible* MissileDestruction = Cast<AGPIV_MissileDestructible>(OtherActor);
+	if (MissileDestruction)
+	{
+		OtherActor->Destroy();
+	}
 
-// Called every frame
-void AGPIV_Projectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	Destroy();
 }
 

@@ -11,6 +11,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 class USkeletalMeshComponent;
+class USceneComponent;
 /**
  * 
  */
@@ -110,4 +111,14 @@ public:
 	void AllowDoubleJump();
 
 	/*			Shooting			*/
+private:
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	USceneComponent* SpawnPointComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<class AGPIV_Projectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	FVector MuzzleOffset;	
 };
