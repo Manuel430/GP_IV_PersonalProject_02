@@ -23,7 +23,6 @@ AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
 	CameraBoom->bUsePawnControlRotation = true;
 
 	GetCharacterMovement()->JumpZVelocity = 600.f;
-	JumpMaxCount = 2;
 
 }
 
@@ -49,6 +48,9 @@ void AGPIV_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		EnhancedInputComp->BindAction(LookInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Look);
 		EnhancedInputComp->BindAction(JumpInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::JumpAction);
 		EnhancedInputComp->BindAction(MorphballInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Morphball);
+		EnhancedInputComp->BindAction(SprintInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Sprinting);
+		EnhancedInputComp->BindAction(WalkInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Walking);
+		EnhancedInputComp->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Shooting);
 	}
 }
 
@@ -115,14 +117,34 @@ void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 
 void AGPIV_PlayerCharacter::Sprinting(const FInputActionValue& InputValue)
 {
+	if (bIsMorphballMode)
+	{
+		return;
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed *= 2;
 }
 
 void AGPIV_PlayerCharacter::Walking(const FInputActionValue& InputValue)
 {
+	if (bIsMorphballMode)
+	{
+		return;
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed /= 2;
 }
 
 void AGPIV_PlayerCharacter::Shooting(const FInputActionValue& InputValue)
 {
+	if (bIsMorphballMode)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Cannot shoot while in Morphball"));
+		return;
+	}
+
+	UE_LOG(LogTemp, Error, TEXT("I am Shooting!"));
+
 }
 
 FVector AGPIV_PlayerCharacter::GetMoveFwdDir() const

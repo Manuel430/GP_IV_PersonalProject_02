@@ -56,6 +56,9 @@ private:
 	UInputAction* SprintInputAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* WalkInputAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* ShootInputAction;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -93,7 +96,7 @@ protected:
 	/*			Upgrades			*/
 public:
 
-	bool bCanDoubleJump;
+	bool bCanDoubleJump = false;
 
 	UFUNCTION()
 	void AllowDoubleJump();
