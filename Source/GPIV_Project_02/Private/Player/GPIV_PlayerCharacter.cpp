@@ -53,7 +53,14 @@ void AGPIV_PlayerCharacter::Move(const FInputActionValue& InputValue)
 	FVector2D Input = InputValue.Get<FVector2D>();
 	Input.Normalize();
 
-	AddMovementInput(Input.Y * GetMoveFwdDir() + Input.X * GetMoveRightDir());
+	if (bIsMorphballMode)
+	{
+		AddMovementInput(Input.Y * GetMoveFwdDir());
+	}
+	else
+	{
+		AddMovementInput(Input.Y * GetMoveFwdDir() + Input.X * GetMoveRightDir());
+	}
 }
 
 void AGPIV_PlayerCharacter::Look(const FInputActionValue& InputValue)
@@ -75,8 +82,6 @@ void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 		CameraBoom->TargetArmLength = 0;
 		GetCharacterMovement()->MaxWalkSpeed = 600;
 		GetCapsuleComponent()->SetCapsuleHalfHeight(88);
-		GetCharacterMovement()->bOrientRotationToMovement = false;
-		GetCharacterMovement()->RotationRate = FRotator(0.f);
 		JumpMaxCount = 2;
 		//UE_LOG(LogTemp, Error, TEXT("Player is in Suit form"));
 	}
@@ -84,9 +89,7 @@ void AGPIV_PlayerCharacter::Morphball(const FInputActionValue& InputValue)
 	{
 		CameraBoom->TargetArmLength = 500;
 		GetCharacterMovement()->MaxWalkSpeed = 6000;
-		GetCapsuleComponent()->SetCapsuleHalfHeight(38);
-		GetCharacterMovement()->bOrientRotationToMovement = true;
-		GetCharacterMovement()->RotationRate = FRotator(1080.f);
+		GetCapsuleComponent()->SetCapsuleHalfHeight(34);
 		JumpMaxCount = 1;
 		//UE_LOG(LogTemp, Error, TEXT("Player is in Morphball form"));
 	}
@@ -104,4 +107,16 @@ FVector AGPIV_PlayerCharacter::GetMoveFwdDir() const
 FVector AGPIV_PlayerCharacter::GetMoveRightDir() const
 {
 	return ViewCamera->GetRightVector();
+}
+
+void AGPIV_PlayerCharacter::AllowDoubleJump()
+{
+	bCanDoubleJump = true;
+
+	if (bIsMorphballMode)
+	{
+		return;
+	}
+
+	JumpMaxCount = 2;
 }

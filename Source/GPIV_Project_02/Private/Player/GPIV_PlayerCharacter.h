@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class USkeletalMeshComponent;
 /**
  * 
  */
@@ -27,6 +28,13 @@ private:
 
 	UPROPERTY(visibleAnywhere, Category = "View")
 	UCameraComponent* ViewCamera;
+
+	/*			SkeletalMeshes			*/
+	UPROPERTY(visibleAnywhere, Category = "Meshes")
+	USkeletalMeshComponent* MoprhballMeshComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Meshes")
+	USkeletalMeshComponent* SamusMeshComponent;
 
 	virtual void PawnClientRestart() override;
 
@@ -70,4 +78,13 @@ protected:
 
 	bool bIsMorphballMode;
 
+	/*			Upgrades			*/
+public:
+
+	bool bCanDoubleJump;
+
+	UFUNCTION()
+	void AllowDoubleJump();
+
+	/*			Shooting			*/
 };
