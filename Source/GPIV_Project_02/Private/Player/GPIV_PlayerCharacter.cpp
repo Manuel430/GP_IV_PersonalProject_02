@@ -1,13 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GPIV_PlayerCharacter.h"
+
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerController.h"
+
 #include "Camera/CameraComponent.h"
+
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+
 #include "Components/CapsuleComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+
+#include "Projectile/GPIV_Projectile.h"
 
 
 AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
@@ -149,7 +156,22 @@ void AGPIV_PlayerCharacter::Shooting(const FInputActionValue& InputValue)
 		return;
 	}
 
-	UE_LOG(LogTemp, Error, TEXT("I am Shooting!"));
+	if (ProjectileClass != nullptr)
+	{
+		UWorld* const World = GetWorld();
+		if (World != nullptr)
+		{
+			APlayerController* PlayerController = Cast<APlayerController>(GetController());
+			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
+			const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
+
+			FActorSpawnParameters ActorSpawnParams;
+			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+			World->SpawnActor<AGPIV_Projectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+		}
+	}
+	//UE_LOG(LogTemp, Error, TEXT("I am Shooting!"));
 
 }
 
