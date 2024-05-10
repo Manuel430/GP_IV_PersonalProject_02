@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Player/GPIV_PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "Framework/GPIV_GameMode.h"
 
 // Sets default values
 AGPIV_EscapeCollision::AGPIV_EscapeCollision()
@@ -27,6 +28,8 @@ void AGPIV_EscapeCollision::OnSphereOverlap(UPrimitiveComponent* OverlappedCompo
 
 	if (PlayerCharacter)
 	{
+		AGPIV_GameMode* GameMode = GetWorld()->GetAuthGameMode<AGPIV_GameMode>();
+		GameMode->GameEnd();
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 }

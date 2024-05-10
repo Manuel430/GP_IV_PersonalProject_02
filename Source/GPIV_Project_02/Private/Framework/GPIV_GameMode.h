@@ -14,4 +14,13 @@ class AGPIV_GameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(EditAnywhere, Category = "Config")
+	TSubclassOf<UUserWidget> EndGameWidget;
+
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void GameEnd();
+
 };
