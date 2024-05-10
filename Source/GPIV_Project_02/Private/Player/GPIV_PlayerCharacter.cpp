@@ -16,6 +16,8 @@
 
 #include "Projectile/GPIV_Projectile.h"
 
+#include "Kismet/GameplayStatics.h"
+
 
 AGPIV_PlayerCharacter::AGPIV_PlayerCharacter()
 {
@@ -61,6 +63,7 @@ void AGPIV_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		EnhancedInputComp->BindAction(SprintInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Sprinting);
 		EnhancedInputComp->BindAction(WalkInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Walking);
 		EnhancedInputComp->BindAction(ShootInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Shooting);
+		EnhancedInputComp->BindAction(QuitInputAction, ETriggerEvent::Triggered, this, &AGPIV_PlayerCharacter::Quitting);
 	}
 }
 
@@ -176,6 +179,12 @@ void AGPIV_PlayerCharacter::Shooting(const FInputActionValue& InputValue)
 	}
 	//UE_LOG(LogTemp, Error, TEXT("I am Shooting!"));
 
+}
+
+void AGPIV_PlayerCharacter::Quitting(const FInputActionValue& InputValue)
+{
+	APlayerController* SpecificPlayer = GetWorld()->GetFirstPlayerController();
+	UKismetSystemLibrary::QuitGame(GetWorld(), SpecificPlayer, EQuitPreference::Quit, true);
 }
 
 FVector AGPIV_PlayerCharacter::GetMoveFwdDir() const

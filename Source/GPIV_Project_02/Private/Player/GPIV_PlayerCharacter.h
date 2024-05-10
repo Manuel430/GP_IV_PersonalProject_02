@@ -62,6 +62,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* ShootInputAction;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* QuitInputAction;
+
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
@@ -84,6 +87,9 @@ private:
 
 	UFUNCTION()
 	void Shooting(const FInputActionValue& InputValue);
+
+	UFUNCTION()
+	void Quitting(const FInputActionValue& InputValue);
 
 	FVector GetMoveFwdDir() const;
 	FVector GetMoveRightDir() const;
